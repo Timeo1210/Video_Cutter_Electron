@@ -1,2 +1,2 @@
-pythonScripts/Input_Videos/
-pythonScripts/Output_Videos/
+pythonScripts/Input_Videos/*
+pythonScripts/Output_Videos/*
