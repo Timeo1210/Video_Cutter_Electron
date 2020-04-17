@@ -7,6 +7,6 @@ cache/Output_Videos/*
 Frameworks/ffmpeg.exe
 pythonScripts/__pycache__
 release-builds
-windist/*
+windist/client
 client.spec
 package-lock.json
