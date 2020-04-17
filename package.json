@@ -4,11 +4,17 @@
   "description": "Win and darwin app for fast4video",
   "main": "main.js",
   "scripts": {
+    "_devKill": "taskkill /f /im python3.exe",
+    "_devPythonStart": "python3 pythonScripts/client.py",
+    "_package-win-outdated": "electron-packager . fast4videos --overwrite --ignore='pythonScripts$' --ignore='pythonScripts' --asar=true --platform=win32 --arch=ia32 --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Fast4Videos\"",
+    "_copy-external-resources": "mkdir .\\release-builds\\Fast4Videos-win32-ia32\\resources\\cache && xcopy .\\cache .\\release-builds\\Fast4Videos-win32-ia32\\resources\\cache /e && mkdir .\\release-builds\\Fast4Videos-win32-ia32\\resources\\Frameworks && xcopy .\\Frameworks .\\release-builds\\Fast4Videos-win32-ia32\\resources\\Frameworks && mkdir .\\release-builds\\Fast4Videos-win32-ia32\\resources\\windist && xcopy .\\windist .\\release-builds\\Fast4Videos-win32-ia32\\resources\\windist /e",
+    
     "start": "electron .",
-    "devKill": "taskkill /f /im python3.exe",
-    "devPythonStart": "python3 pythonScripts/client.py",
+
     "package-python-win": "rmdir .\\windist /s /q && pyinstaller pythonScripts/client.py && ren dist windist && echo. > windist/erase_windist_folder_by_the_dist_pyinstaller_folder.txt",
-    "package-win": "electron-packager . fast4videos --overwrite --ignore='pythonScripts$' --ignore='pythonScripts' --asar=true --platform=win32 --arch=ia32 --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Fast4Videos\""
+    "package-win": "electron-packager ./ Fast4Videos --platform=win32 --arch=ia32 --asar=true --out=release-builds --overwrite --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Fast4Videos\" --ignore='./build' --prune=true --ignore='./cache' --ignore='./Frameworks' --ignore='./pythonScripts' --ignore='./windist' --ignore='./client.spec' --ignore='package-lock.json' --ignore='./.gitignore' --ignore='./.gitkeep' --ignore='./.git' --ignore='./node_modules/.bin' --ignore='./node_modules/electron' --ignore='./node_modules/electron-prebuilt' --ignore='./node_modules-prebuilt-compile'  ",
+    "compile-package-win-app": "git checkout production_ready && npm run package-python-win && npm run package-win && npm run _copy-external-resources"
+
   },
   "repository": {
     "type": "git",
