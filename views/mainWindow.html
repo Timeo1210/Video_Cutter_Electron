@@ -1,0 +1,121 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Fast4Video</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: whitesmoke;
+            font-family: Roboto, sans-serif;
+        }
+
+        #container {
+            margin: 0;
+            padding: 0;
+        }
+
+        .topbar {
+            background-color: #2C3E50;
+            color: var(--white);
+            width: 100%
+        }
+
+        .topbar h1 {
+            padding: 10px 0px;
+        }
+
+        main {
+            margin-top: 10px;
+        }
+
+        #basic-addon1 {
+
+            border: 2px solid lightgrey;
+            background-color: #fff;
+            font-size: 16px;
+            height: 2.5em;
+            width: 2.5em;
+            border-radius: 999px;
+            position: relative;
+        }
+	
+        #basic-addon1:after,
+        #basic-addon1:before {
+            content: "";
+            display: block;
+            background-color: grey;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        #basic-addon1:before {
+            height: 1em;
+            width: 0.2em;
+        }
+
+        #basic-addon1:after {
+            height: 0.2em;
+            width: 1em;
+        }
+
+        #inputFileBrowse {
+            cursor: pointer;
+        }
+
+        .notShow {
+            display: none !important;
+        }
+
+        .notVisible {
+            visibility: hidden;
+        }
+
+        .cursorNotAllowed {
+            cursor: not-allowed;
+        }
+
+        #loadingBarText {
+            font-size: 1.2rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="container" class="container-fluid">
+        <header class="d-flex justify-content-center topbar">
+            <h1>Fast4Videos</h1>
+        </header>
+        <main class="container-fluid">
+            <div class="input-group mb-3">
+                <input type="text" id="inputFile" class="form-control" placeholder="Choisir une vidéo">
+                <div class="input-group-append">
+                    <span class="input-group-text" id="inputFileBrowse">Parcourir</span>
+                </div>
+            </div>
+            <div style="height: 33%; padding: 25px;" id="progressDiv" class="d-flex flex-column justify-content-center align-items-center notShow">
+                <p id="loadingBarText">Chargement...</p>
+                <div class="progress" style="width: 100%;">
+                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                </div>
+            </div>
+            <div id="divSaveButton" class="d-flex justify-content-center align-items-center mt-3 mb-3 notShow">
+                <button id="saveButton" class="btn btn-primary" style="font-size: 1.6rem;">SAVE</button>
+            </div>
+            <div id="divStartButton" class="d-flex justify-content-center align-items-center">
+                <button onclick="execPyProc" id="startButton" disabled class="btn btn-primary cursorNotAllowed" style="font-size: 2rem;">Lancer</button>
+            </div>
+        </main>
+        <p id="progress"></p>
+    </div>
+
+    <script src="./renderers/mainRenderer.js"></script>
+</body>
+</html> 

@@ -100,17 +100,17 @@ def main(socket, video_name, video_dir):
     video_name = video_name
     video_extension = video_name.split('.')[1]
     video_title = video_name.split('.')[0]
-    FFMPEG_PATH = os.path.join(os.getcwd(), "resources","Frameworks", "ffmpeg.exe")
-    ABS_PATH = os.path.join(os.getcwd(), "resources", "cache")
+    FFMPEG_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Frameworks", "ffmpeg.exe")
+    ABS_PATH = os.path.dirname(os.path.abspath(__file__))
     PATH = os.path.join(ABS_PATH, "Input_Videos", video_dir)
     video_path = os.path.join(PATH, video_name)
     file_id = video_dir
     audio_name = os.path.join(PATH, video_title + ".wav")
     output_video_path = os.path.join(ABS_PATH, "Output_Videos", video_dir, video_name)
     output_dir_path = os.path.join(ABS_PATH, "Output_Videos", video_dir)
-    print(ABS_PATH)
-    print(FFMPEG_PATH)
-    print(PATH)
+    #print(ABS_PATH)
+
+    #print(PATH)
 
     socket.emit("mainStatus", {"status": "inProgress", "progress": "Converting Video to Audio for analyse..."})
     ConvertVideoToAudio()
