@@ -10,3 +10,4 @@ release-builds
 windist/client
 client.spec
 package-lock.json
+./build
