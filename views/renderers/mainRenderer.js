@@ -2,7 +2,6 @@ const electron = require('electron');
 const { ipcRenderer } = electron;
 const dialog = electron.remote.dialog;
 
-const CONTAINER = document.getElementById('container');
 const DOM = {
     button: document.createElement('button'),
     inputFile: document.getElementById('inputFile'),
@@ -18,10 +17,8 @@ const DOM = {
 const VIDEO = {}
 
 ipcRenderer.on('videos:init', function(e, video) {
-    console.log("INIT")
     VIDEO.name = video.name;
     VIDEO.dirName = video.dirName;
-    console.log(VIDEO)
 
     DOM.inputFile.value = VIDEO.name
     DOM.inputFile.removeEventListener('click', chooseFile)
@@ -30,7 +27,6 @@ ipcRenderer.on('videos:init', function(e, video) {
     DOM.startButton.classList.remove('cursorNotAllowed')
 })
 ipcRenderer.on('videos:status', function(e, msg) {
-    console.log(msg.progress)
     DOM.loadingBarText.innerHTML = msg['progress']
     //check if the message is a cut
     msg.processed = msg.progress.split(' ')
@@ -38,7 +34,6 @@ ipcRenderer.on('videos:status', function(e, msg) {
         const [nominateur, denominateur] = msg.processed[1].split('/').map(x => parseInt(x))
         const pourcentage = (nominateur/denominateur)*100
         DOM.progressBar.style.width = `${pourcentage}%`
-
     }
 
     if (msg.progress === "Terminé") {
@@ -53,13 +48,6 @@ ipcRenderer.on('videos:restart', function(e, msg) {
     DOM.divSaveButton.classList.add("notShow")
     DOM.divStartButton.classList.remove("notShow")
     DOM.inputFile.addEventListener('click', chooseFile)
-})
-ipcRenderer.on('videos:debug', function(e, msg) {
-    console.log(e)
-    console.log(msg)
-})
-ipcRenderer.on('debug:console', function(e, msg) {
-    console.log(msg)
 })
 
 
@@ -81,7 +69,6 @@ function chooseFile() {
 }
 
 function saveFile() {
-    console.log(VIDEO)
     const files = dialog.showSaveDialogSync({
         defaultPath: VIDEO.name,
         filters: [
@@ -92,14 +79,12 @@ function saveFile() {
         ]
     })
 
-    console.log(files)
     if (typeof files !== 'undefined') {
         ipcRenderer.sendSync('videoSaveFile', files)
     }
 }
 
 function execPyProc() {
-    console.log("start script")
     DOM.progressDiv.classList.remove('notVisible')
     VIDEO.name = DOM.inputFile.value
     ipcRenderer.sendSync('startMain', VIDEO)
