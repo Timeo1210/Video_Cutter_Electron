@@ -65,6 +65,7 @@ def main(socket, video_name, video_dir):
             for j in range(i + 1, len(ProcessTimeStamp), 1):
                 ProcessTimeStamp[j][0] = ProcessTimeStamp[j][0] - cutTime
                 ProcessTimeStamp[j][1] = ProcessTimeStamp[j][1] - cutTime
+        print(ProcessTimeStamp)
         return ProcessTimeStamp
     def CutVideoAt(start_time, end_time):
         if start_time == 0:
@@ -99,14 +100,17 @@ def main(socket, video_name, video_dir):
     video_name = video_name
     video_extension = video_name.split('.')[1]
     video_title = video_name.split('.')[0]
-    FFMPEG_PATH = os.path.join(os.getcwd(), "resources","Frameworks", "ffmpeg.exe")
-    ABS_PATH = os.path.join(os.getcwd(), "resources", "cache")
+    FFMPEG_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Frameworks", "ffmpeg.exe")
+    ABS_PATH = os.path.dirname(os.path.abspath(__file__))
     PATH = os.path.join(ABS_PATH, "Input_Videos", video_dir)
     video_path = os.path.join(PATH, video_name)
     file_id = video_dir
     audio_name = os.path.join(PATH, video_title + ".wav")
     output_video_path = os.path.join(ABS_PATH, "Output_Videos", video_dir, video_name)
     output_dir_path = os.path.join(ABS_PATH, "Output_Videos", video_dir)
+    #print(ABS_PATH)
+
+    #print(PATH)
 
     socket.emit("mainStatus", {"status": "inProgress", "progress": "Converting Video to Audio for analyse..."})
     ConvertVideoToAudio()
@@ -116,8 +120,14 @@ def main(socket, video_name, video_dir):
     length = data.shape[0] / samplerate
     CHUNKSCUTTER = int(samplerate / 100);
 
+    print("length: " + str(length))
+    print("samplerate: " + str(samplerate))
+
     AudioChunks = CalcAudioChunks(data)
     treshold = CalcTreshold(AudioChunks)
+
+    print("treshold: " + str(treshold))
+    print("ChunksCount: " + str(len(AudioChunks)))
 
     socket.emit("mainStatus", {"status": "inProgress", "progress": "Analyse Audio..."})
     
@@ -139,3 +149,9 @@ def main(socket, video_name, video_dir):
     os.remove(audio_name)
     os.rmdir(PATH)
     return "FINISH"
+
+if __name__ == "__main__":
+    main("new.mp4", "18-02-2020_11-18-36");
+    #print("----")
+    #print(os.path.dirname(os.path.abspath(__file__)))
+    #print(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Executable", "ffmpeg.exe"))
