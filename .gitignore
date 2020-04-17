@@ -1,2 +1,12 @@
 pythonScripts/Input_Videos/*
 pythonScripts/Output_Videos/*
+node_modules
+build
+cache/Input_Videos/*
+cache/Output_Videos/*
+Frameworks/ffmpeg.exe
+pythonScripts/__pycache__
+release-builds
+windist/*
+client.spec
+package-lock.json
