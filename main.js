@@ -11,16 +11,12 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = electron;
 
 //PARAMS
 app.allowRendererProcessReuse = true;
-//process.env.NODE_ENV = 'development';
 process.env.NODE_ENV = "production";
 const DS = path.sep;
 const RLPATH = app.getAppPath();
-//const FLPATH = process.env.NODE_ENV == 'production' ? path.dirname(RLPATH) : RLPATH;
-//const FLPATH = RLPATH
 const FLPATH = process.env.NODE_ENV == 'production' ? path.dirname(RLPATH) : RLPATH
 const FILE = {}
 
-//let mainWindow = require('./Windows/mainWindow');
 let mainWindow;
 
 app.on('ready', () => {
@@ -65,8 +61,7 @@ if (process.platform == 'darwin') {
 
 
 //Add developper tools if not in production
-//if (process.env.NODE_ENV !== 'production') {
-if (1 === 1) {
+if (process.env.NODE_ENV !== 'production') {
     mainMenuTemplate.push({
         label: "Developer Tools",
         submenu: [
@@ -115,7 +110,6 @@ function handleVideoFile(file) {
     FILE.videoName = fileName
     FILE.videoDir = fileDirName
     FILE.filePath = filePath 
-    //TODO
     mainWindow.webContents.send('videos:init', {
         dirName: fileDirName,
         name: fileName,
@@ -137,10 +131,6 @@ function handleDeleteCache() {
 //IpcRenderer
 ipcMain.on('startMain', (event, arg) => {
     FILE.videoName = arg.name 
-    mainWindow.webContents.send('videos:debug', FLPATH)
-    mainWindow.webContents.send('videos:debug', RLPATH)
-    mainWindow.webContents.send('videos:debug', path.dirname(RLPATH))
-    //PROD
     const fileDirPathIn = path.join(FLPATH, "cache", "Input_Videos", FILE.videoDir)
     const newFilePath = path.join(FLPATH, "cache", "Input_Videos", FILE.videoDir, FILE.videoName)
     try {
@@ -172,23 +162,11 @@ ipcMain.on('videoSaveFile', (event, arg) => {
     mainWindow.webContents.send('videos:restart', "restart")
 })
 
-ipcMain.on('run devTest', (event, arg) => {
-    io.emit('run devTest', 'test')
-    event.returnValue = "OK"
-})
-
 //IO
 io.on('connection', function(socket) {
-    console.log('SCRIPT CONNECTED')
-
     socket.on('mainStatus', function(msg) {
         console.log('CP: ' + JSON.stringify(msg))
         mainWindow.webContents.send('videos:status', msg)
-    })
-
-    socket.on('console', function(msg) {
-        console.log(msg)
-        mainWindow.webContents.send('debug:console', msg)
     })
 })
 
@@ -210,7 +188,6 @@ const createPyProc = () => {
         }
     }
     exeProc = cp.execFile(EXEpath)
-    //exeProc = cp.spawn('python3', [path.resolve(__dirname, 'windist', 'client', 'client.py')])
 
     if (exeProc !== null) {
         console.log('child process sucessed')
